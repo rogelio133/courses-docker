@@ -1,0 +1,10 @@
+#capa 1 : imagen base
+FROM ubuntu:latest
+#capa 2 : update de paquetes
+RUN apt-get update
+#capa 3 : instalacion curl
+RUN apt-get install -y curl
+#capa 4 : copia de archivos del directorio app
+COPY . /app
+#capa 5 : ejecuta comando de terminal
+CMD [ "echo", "Hello, World!" ]
