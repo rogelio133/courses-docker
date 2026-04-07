@@ -1,0 +1,12 @@
+FROM nginx:1.27.2
+
+RUN apt-get update && apt-get -y upgrade
+
+RUN groupadd -r rogeliop && useradd -r -g rogeliop rogeliop
+RUN chown -R rogeliop:rogeliop /usr/share/nginx/html
+
+USER rogeliop
+
+#RUN apt-get update && apt-get -y upgrade
+
+CMD ["bash", "-c", "echo Hello Dockers!"]
