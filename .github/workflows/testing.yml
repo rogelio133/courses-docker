@@ -1,20 +1,31 @@
-name: testing
+name: Docker Test
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      
 jobs:
-  docker-test:
+  docker-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: build image
-        run: docker build -t mi-imagen:latest .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-      - name: run alpine container
-        run: docker run -d --name alpine-test alpine sh -c "while true; do sleep 60; done"
-
-      - name: run tests inside container (shell)
+      - name: Run Docker container
         run: |
-          docker exec alpine-test sh -lc "printf 'contenido de prueba\n' > ejemplo.txt && ls -la"
+          docker run -d --name testcontainer alpine tail -f /dev/null
+
+      - name: Run tests
+        run: |
+          docker exec testcontainer /bin/sh -c "
+            echo 'Ejecutando pruebas...';
+            cd home
+            mkdir amin 
+            cd amin
+            printf 'Este es el contenido del archivo.\nPuede incluir varias líneas.\n' > ejemplo.txt
+            ls -a || exit 1
+          "
